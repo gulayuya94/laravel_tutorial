@@ -14,7 +14,7 @@
                     <a href="/tasklist" class="btn btn-info btn-md btn-block" role="button" style="color: white;">Todo list</a>
                 </div>
                 <div class="card-body">
-                    <a href="#" class="btn btn-primary btn-md btn-block" role="button">Add new Todo</a>
+                    <a href="/create" class="btn btn-primary btn-md btn-block" role="button">Add New Todo</a>
                 </div>
             </div>
         </div>

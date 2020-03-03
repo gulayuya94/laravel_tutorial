@@ -18,5 +18,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// topページ
 Route::get('/home', 'HomeController@index')->name('home');
+
+// task一覧ページ
 Route::get('/tasklist', 'HomeController@showTaskList')->name('tasklist');
+
+// todo作成ページ
+Route::get('/create', function () {
+    return view('create');
+});
+
+// todo作成リクエスト
+Route::post('/create', 'HomeController@create')->name('create');

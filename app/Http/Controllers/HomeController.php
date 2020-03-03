@@ -64,4 +64,26 @@ class HomeController extends Controller
             'tasks' => $tasks,
         ]);
     }
+
+    public function create(Request $request)
+    {
+        // インスタンス生成
+        $newTask = new Task;
+
+        // 情報の受け取り
+        $newTask->title = $request->title;
+        $newTask->content = $request->content;
+        $newTask->due_date = $request->date;
+
+        // その他情報の格納
+        $newTask->user_id = Auth::id();
+        $newTask->status = 1;
+
+        // 保存
+        $newTask->save();
+
+        // 保存後リダイレクト
+        return redirect('/tasklist');
+
+    }
 }
