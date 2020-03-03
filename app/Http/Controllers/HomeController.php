@@ -85,4 +85,35 @@ class HomeController extends Controller
         return redirect('/tasklist');
 
     }
+
+    public function edit($id)
+    {
+        // idを元にtodoの情報を取得
+        $tasks = DB::table('tasks')->where('id', $id)->first();
+
+        // データの格納
+        $task_data = array();
+        $task_data['id'] = $tasks->id;
+        $task_data['title'] = $tasks->title;
+        $task_data['content'] = $tasks->content;
+        $task_data['status'] = $tasks->status;
+        $task_data['due_date'] = $tasks->due_date;
+        
+        // 編集ページに受け渡し
+        return view('edit', $task_data);
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        Task::find($id)->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'status' => $request->status,
+            'due_date' => $request->date,
+        ]);
+
+        // 編集後リダイレクト
+        return redirect('/tasklist');
+    }
 }

@@ -42,7 +42,7 @@
                                 <p>{{ $content }}</p>
                             </div>
                             <div class="col-1">
-                                <a href="#" class="btn btn-outline-success btn-sm" role="button">edittask</a>
+                                <a href="/edit/{{ $id }}" class="btn btn-outline-success btn-sm" role="button">edit</a>
                             </div>
                             <div class="col-1">
                                 <a href="/delete/{{ $id }}" class="btn btn-outline-danger btn-sm" role="button">delete</a>

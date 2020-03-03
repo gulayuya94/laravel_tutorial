@@ -21,7 +21,7 @@ Auth::routes();
 // topページ
 Route::get('/home', 'HomeController@index')->name('home');
 
-// task一覧ページ
+// todo一覧ページ
 Route::get('/tasklist', 'HomeController@showTaskList')->name('tasklist');
 
 // todo作成ページ
@@ -33,4 +33,10 @@ Route::get('/create', function () {
 Route::post('/create', 'HomeController@create')->name('create');
 
 // todo削除リクエスト
-Route::get('delete/{id}', 'Homecontroller@delete');
+Route::get('/delete/{id}', 'HomeController@delete');
+
+// todo詳細ページ
+Route::get('/edit/{id}', 'HomeController@edit');
+
+// todo編集リクエスト
+Route::post('/update/{id}', 'HomeController@update');
