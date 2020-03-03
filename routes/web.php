@@ -31,3 +31,6 @@ Route::get('/create', function () {
 
 // todo作成リクエスト
 Route::post('/create', 'HomeController@create')->name('create');
+
+// todo削除リクエスト
+Route::get('delete/{id}', 'Homecontroller@delete');

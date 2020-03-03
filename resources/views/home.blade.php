@@ -45,7 +45,7 @@
                                 <a href="#" class="btn btn-outline-success btn-sm" role="button">edittask</a>
                             </div>
                             <div class="col-1">
-                                <a href="#" class="btn btn-outline-danger btn-sm" role="button">delete</a>
+                                <a href="/delete/{{ $id }}" class="btn btn-outline-danger btn-sm" role="button">delete</a>
                             </div>
                         </div>
                     </div>
