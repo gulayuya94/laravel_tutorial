@@ -36,6 +36,7 @@ class HomeController extends Controller
         $task_data = array();
         $task_data['title'] = $tasks->title;
         $task_data['content'] = $tasks->content;
+        $task_data['due_date'] = $tasks->due_date;
         $task_data['id'] = $tasks->id;
 
 

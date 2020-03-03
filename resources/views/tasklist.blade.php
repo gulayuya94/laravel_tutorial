@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card">
                 <div class="card-header">MENU</div>
 
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">Todo List</div>
 
@@ -26,7 +26,8 @@
                     <div class="row">
                         <div class="col-2 text-center">status</div>
                         <div class="col-2">title</div>
-                        <div class="col-8">content</div>
+                        <div class="col-4">content</div>
+                        <div class="col-4">due_date</div>
                     </div>
                 </div>
 
@@ -46,8 +47,11 @@
                                 <div class="col-3">
                                     <p class="text-center">{{ $task->title }}</p>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <p>{{ $task->content }}</p>
+                                </div>
+                                <div class="col-2">
+                                    <p>{{ $task->due_date }}</p>
                                 </div>
                                 <div class="col-1">
                                     <a href="/edit/{{ $task->id }}" class="btn btn-outline-success btn-sm" role="button">edit</a>
