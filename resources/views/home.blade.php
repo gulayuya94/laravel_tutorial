@@ -8,7 +8,10 @@
                 <div class="card-header">MENU</div>
 
                 <div class="card-body">
-                    <a href="#" class="btn btn-info btn-md btn-block" role="button" style="color: white;">Todo list</a>
+                    <a href="/home" class="btn btn-info btn-md btn-block" role="button" style="color: white;">Home</a>
+                </div>
+                <div class="card-body">
+                    <a href="/tasklist" class="btn btn-info btn-md btn-block" role="button" style="color: white;">Todo list</a>
                 </div>
                 <div class="card-body">
                     <a href="#" class="btn btn-primary btn-md btn-block" role="button">Add new Todo</a>
@@ -18,30 +21,31 @@
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">New Todo</div>
+                <div class="card-body" style="border-bottom: solid 1px #333">
+                    <div class="row">
+                        <div class="col-2 text-center">status</div>
+                        <div class="col-2">title</div>
+                        <div class="col-8">content</div>
+                    </div>
+                </div>
 
                 <div class="card-body">
-                    {{-- @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif --}}
-            
                     <div class="container">
                         <div class="row">
+                            <div class="col-1">
+                                <p class="btn btn-warning btn-sm">waiting</p>
+                            </div>
                             <div class="col-3">
-                                <p>{{ $title }}</p>
+                                <p class="text-center">{{ $title }}</p>
                             </div>
                             <div class="col-6">
                                 <p>{{ $content }}</p>
                             </div>
                             <div class="col-1">
-                                <p class="btn btn-secondary btn-sm">waiting</p>
+                                <a href="#" class="btn btn-outline-success btn-sm" role="button">edittask</a>
                             </div>
                             <div class="col-1">
-                                <a href="#" class="btn btn-success btn-sm" role="button">edittask</a>
-                            </div>
-                            <div class="col-1">
-                                <a href="#" class="btn btn-danger btn-sm" role="button">delete</a>
+                                <a href="#" class="btn btn-outline-danger btn-sm" role="button">delete</a>
                             </div>
                         </div>
                     </div>

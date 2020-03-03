@@ -16,8 +16,8 @@ class TasksTableSeeder extends Seeder
         DB::table('tasks')->insert([
             'user_id' => 1,
             'title' => 'sampleTodo10',
-            'content' => 'sampleContent10 sampleContent10 sampleContent10 sampleContent10 sampleContent10',
-            'status' => 1,
+            'content' => 'sampleContent10 sampleContent10 sampleContent10 ',
+            'status' => 3,
             'due_date' => Carbon::now(),
             'created_at' => Carbon::now(),
         ]);

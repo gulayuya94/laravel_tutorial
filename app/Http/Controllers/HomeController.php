@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
+use App\Task;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -49,5 +50,18 @@ class HomeController extends Controller
 
 
         return view('home', $task_data);
+    }
+
+    public function showTaskList()
+    {
+        // ログインユーザのidを取得
+        $auth_user_id = Auth::id();
+
+        // ログインユーザの全タスクを取得
+        $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->get();
+
+        return view('tasklist', [
+            'tasks' => $tasks,
+        ]);
     }
 }
