@@ -15,10 +15,11 @@ class TasksTableSeeder extends Seeder
     {
         DB::table('tasks')->insert([
             'user_id' => 1,
-            'title' => 'sampleTodo2',
-            'content' => 'sampleContent2',
+            'title' => 'sampleTodo10',
+            'content' => 'sampleContent10 sampleContent10 sampleContent10 sampleContent10 sampleContent10',
             'status' => 1,
-            'due_date' => new DateTime(),
+            'due_date' => Carbon::now(),
+            'created_at' => Carbon::now(),
         ]);
     }
 }
