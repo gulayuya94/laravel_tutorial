@@ -139,11 +139,11 @@
                             <div class="row">
                                 <div class="col-1">
                                     @if ( $task->status === 1 )
-                                        <p class="btn btn-warning btn-sm" style="color: #333;">waiting</p>
+                                        <p class="btn btn-warning btn-sm" style="color: #333; cursor: default">waiting</p>
                                     @elseif ( $task->status === 2 )
-                                        <p class="btn btn-primary btn-sm">working</p>
+                                        <p class="btn btn-primary btn-sm" style="cursor: default">working</p>
                                     @else
-                                        <p class="btn btn-secondary btn-sm">done</p>
+                                        <p class="btn btn-secondary btn-sm" style="cursor: default">done</p>
                                     @endif
                                 </div>
                                 <div class="col-3">
