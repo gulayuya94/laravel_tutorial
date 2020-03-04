@@ -19,10 +19,112 @@
             </div>
         </div>
         <div class="col-md-10">
+            <div class="card mb-3">
+                <div class="card-header">Search Your Todo</div>
+                <div class="card-body">
+                    <form action="/search" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="title">title</label>
+                                    <input type="text" id="title" name="title" class="form-control">                            
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="content">content</label>
+                                    <input type="text" id="content" name="content" class="form-control">                            
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="status">status</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="" selected></option>
+                                        <option value="1">waiting</option>
+                                        <option value="2">working</option>
+                                        <option value="3">done</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="startDate">due-date</label>
+                                    <input type="date" id="startDate" name="startDate" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-1" style="margin-top: 25px;">
+                                <p style="font-size: 30px;">   ~</p>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="endDate"></label>
+                                    <input type="date" id="endDate" name="endDate" class="form-control mt-2">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary float-right">Search</button>
+                    </form>
+                </div>
+                <div class="card-body" style="border-bottom: solid 1px #333; border-top: solid 1px #333;">
+                    <div class="row">
+                        <div class="col-2 text-center">status</div>
+                        <div class="col-2">title</div>
+                        <div class="col-4">content</div>
+                        <div class="col-4">due_date</div>
+                    </div>
+                </div>
+
+                @if (isset( $searchResults ))
+                    @foreach ($searchResults as $searchResult)
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-1">
+                                        @if ( $searchResult->status === 1 )
+                                            <p class="btn btn-warning btn-sm" style="color: #333;">waiting</p>
+                                        @elseif ( $searchResult->status === 2 )
+                                            <p class="btn btn-primary btn-sm">working</p>
+                                        @else
+                                            <p class="btn btn-secondary btn-sm">done</p>
+                                        @endif
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="text-center">{{ $searchResult->title }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p>{{ $searchResult->content }}</p>
+                                    </div>
+                                    <div class="col-2">
+                                        <p>{{ $searchResult->due_date }}</p>
+                                    </div>
+                                    <div class="col-1">
+                                        <a href="/edit/{{ $searchResult->id }}" class="btn btn-outline-success btn-sm" role="button">edit</a>
+                                    </div>
+                                    <div class="col-1">
+                                        <a href="/delete/{{ $searchResult->id }}" class="btn btn-outline-danger btn-sm" role="button">delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+
+                @if (isset( $noResult ))
+                    <div class="card-body">
+                        N/A
+                    </div>
+                @endif
+
+            </div>
+
             <div class="card">
                 <div class="card-header">Todo List</div>
 
-                <div class="card-body" style="border-bottom: solid 1px #333">
+                <div class="card-body" style="border-bottom: solid 1px #333;">
                     <div class="row">
                         <div class="col-2 text-center">status</div>
                         <div class="col-2">title</div>

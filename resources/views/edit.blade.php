@@ -50,7 +50,7 @@
                                     <option value="3" selected>done</option>
                                 @endif
                             </select>
-                          </div>
+                        </div>
                         <div class="form-group">
                             <label for="date">due-date</label>
                             <input type="date" id="date" name="date" class="form-control" value="{{ $due_date }}">

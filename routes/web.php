@@ -40,3 +40,6 @@ Route::get('/edit/{id}', 'HomeController@edit');
 
 // todo編集リクエスト
 Route::post('/update/{id}', 'HomeController@update');
+
+// 検索リクエスト
+Route::post('/search', 'HomeController@search');
