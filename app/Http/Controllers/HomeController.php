@@ -26,19 +26,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // ログインユーザのidを取得
-        $auth_user_id = Auth::id();
+        // ログインユーザ情報を取得
+        $user = Auth::user();
 
         // ログインユーザのタスクの中からidが一番大きいもの(一番新しい)タスクを取得
-        $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->where('status', 1)->orderBy('id', 'desc')->first();
+        $task = $user->tasks->where('status', 1)->sortByDesc('id')->first();
 
-        if (isset($tasks)) {
+        if (isset($task)) {
             // タスクデータの格納
             $task_data = array();
-            $task_data['title'] = $tasks->title;
-            $task_data['content'] = $tasks->content;
-            $task_data['due_date'] = $tasks->due_date;
-            $task_data['id'] = $tasks->id;
+            $task_data['title'] = $task->title;
+            $task_data['content'] = $task->content;
+            $task_data['due_date'] = $task->due_date;
+            $task_data['id'] = $task->id;
 
             return view('home', $task_data);
 
@@ -51,11 +51,11 @@ class HomeController extends Controller
 
     public function showTaskList()
     {
-        // ログインユーザのidを取得
-        $auth_user_id = Auth::id();
+        // ログインユーザ情報を取得
+        $user = Auth::user();
 
         // ログインユーザの全タスクを取得
-        $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->get();
+        $tasks = $user->tasks;
 
         return view('tasklist', [
             'tasks' => $tasks,
@@ -95,16 +95,19 @@ class HomeController extends Controller
 
     public function edit($id)
     {
+        // ログインユーザ情報を取得
+        $user = Auth::user();
+
         // idを元にtodoの情報を取得
-        $tasks = DB::table('tasks')->where('id', $id)->first();
+        $task = $user->tasks->where('id', $id)->first();
 
         // データの格納
         $task_data = array();
-        $task_data['id'] = $tasks->id;
-        $task_data['title'] = $tasks->title;
-        $task_data['content'] = $tasks->content;
-        $task_data['status'] = $tasks->status;
-        $task_data['due_date'] = $tasks->due_date;
+        $task_data['id'] = $task->id;
+        $task_data['title'] = $task->title;
+        $task_data['content'] = $task->content;
+        $task_data['status'] = $task->status;
+        $task_data['due_date'] = $task->due_date;
         
         // 編集ページに受け渡し
         return view('edit', $task_data);
@@ -126,12 +129,13 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        // ログインユーザのid取得
-        $auth_user_id = Auth::id();
+        // ログインユーザ情報を取得
+        $user = Auth::user();
 
         // ログインユーザの全タスクを取得
         // todo一覧表示用
-        $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->get();
+        // $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->get();
+        $tasks = $user->tasks;
 
         // 検索リクエスト情報の受け取り
         $bufTitle = $request->title;
@@ -150,7 +154,7 @@ class HomeController extends Controller
 
         // 検索リクエストを元にtasksテーブルから該当する行を取得する
         if (!is_null($bufTitle)) {
-            $resSearchTitle = DB::table('tasks')->where('user_id', $auth_user_id)->where('title', 'like', $searchTitle)->get();
+            $resSearchTitle = $user->tasks()->where('title', 'like', $searchTitle)->get();
 
             $bufTitleId = array();
 
@@ -168,7 +172,7 @@ class HomeController extends Controller
         }
 
         if (!is_null($bufContent)) {
-            $resSearchContent = DB::table('tasks')->where('user_id', $auth_user_id)->where('content', 'like', $searchContent)->get();
+            $resSearchContent = $user->tasks()->where('content', 'like', $searchContent)->get();
 
             $bufContentId = array();
 
@@ -185,7 +189,7 @@ class HomeController extends Controller
         }
 
         if (!is_null($searchStatus)) {
-            $resSearchStatus = DB::table('tasks')->where('user_id', $auth_user_id)->where('status', $searchStatus)->get();
+            $resSearchStatus = $user->tasks()->where('status', $searchStatus)->get();
 
             $bufStatusId = array();
 
@@ -202,7 +206,7 @@ class HomeController extends Controller
         }
 
         if (!is_null($searchStartDate) and !is_null($searchEndDate)) {
-            $resSearchDate = DB::table('tasks')->where('user_id', $auth_user_id)->whereBetween('due_date', [$searchStartDate, $searchEndDate])->get();
+            $resSearchDate = $user->tasks()->whereBetween('due_date', [$searchStartDate, $searchEndDate])->get();
 
             $bufDateId = array();
 
@@ -215,7 +219,7 @@ class HomeController extends Controller
             $judges += 1000;
 
         } elseif (!is_null($searchStartDate) and is_null($searchEndDate)) {
-            $resSearchDate = DB::table('tasks')->where('user_id', $auth_user_id)->where('due_date', '>=', $searchStartDate)->get();
+            $resSearchDate = $user->tasks()->where('due_date', '>=', $searchStartDate)->get();
 
             $bufDateId = array();
 
@@ -228,7 +232,7 @@ class HomeController extends Controller
             $judges += 1000;
 
         } elseif (is_null($searchStartDate) and !is_null($searchEndDate)) {
-            $resSearchDate = DB::table('tasks')->where('user_id', $auth_user_id)->where('due_date', '<=', $searchEndDate)->get();
+            $resSearchDate = $user->tasks()->where('due_date', '<=', $searchEndDate)->get();
 
             $bufDateId = array();
 
@@ -255,19 +259,20 @@ class HomeController extends Controller
 
             switch ($judge[0]) {
                 case 1:
-                    $searchResults = DB::table('tasks')->whereIn('id', $bufTitleId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $bufTitleId)->get();
                     break;
 
                 case 2:
-                    $searchResults = DB::table('tasks')->whereIn('id', $bufContentId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $bufContentId)->get();
                     break;
 
                 case 3:
-                    $searchResults = DB::table('tasks')->whereIn('id', $bufStatusId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $bufStatusId)->get();
                     break;
 
                 case 4:
-                    $searchResults = DB::table('tasks')->whereIn('id', $bufDateId)->get();
+                    // $searchResults = DB::table('tasks')->whereIn('id', $bufDateId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $bufDateId)->get();
                     break;
             }
 
@@ -277,57 +282,57 @@ class HomeController extends Controller
             switch ($judges) {
                 case 11:
                     $targetId = array_intersect($bufTitleId, $bufContentId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 101:
                     $targetId = array_intersect($bufTitleId, $bufStatusId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 110:
                     $targetId = array_intersect($bufContentId, $bufStatusId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 111:
                     $targetId = array_intersect($bufTitleId, $bufContentId, $bufStatusId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1001:
                     $targetId = array_intersect($bufTitleId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1010:
                     $targetId = array_intersect($bufContentId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1011:
                     $targetId = array_intersect($bufTitleId, $bufContentId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1100:
                     $targetId = array_intersect($bufStatusId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1101:
                     $targetId = array_intersect($bufTitleId, $bufStatusId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1110:
                     $targetId = array_intersect($bufContentId, $bufStatusId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
 
                 case 1111:
                     $targetId = array_intersect($bufTitleId, $bufContentId, $bufStatusId, $bufDateId);
-                    $searchResults = DB::table('tasks')->whereIn('id', $targetId)->get();
+                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
                     break;
             }
         } else {
@@ -347,5 +352,6 @@ class HomeController extends Controller
                 'tasks' => $tasks,
             ]);
         }
+
     }
 }
