@@ -27,13 +27,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/create', 'HomeController@create')->name('create');
 
     // todo削除リクエスト
-    Route::get('/delete/{id}', 'HomeController@delete');
+    Route::delete('/delete/{id}', 'HomeController@delete')->name('delete');
 
     // todo詳細ページ
-    Route::get('/edit/{id}', 'HomeController@edit');
+    Route::get('/edit/{id}', 'HomeController@edit')->name('edit');
 
     // todo編集リクエスト
-    Route::post('/update/{id}', 'HomeController@update');
+    Route::post('/update/{id}', 'HomeController@update')->name('update');
 
     // 検索リクエスト
     Route::post('/search', 'HomeController@search');

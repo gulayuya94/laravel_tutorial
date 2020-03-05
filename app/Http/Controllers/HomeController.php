@@ -32,7 +32,7 @@ class HomeController extends Controller
         // ログインユーザのタスクの中からidが一番大きいもの(一番新しい)タスクを取得
         $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->where('status', 1)->orderBy('id', 'desc')->first();
 
-        if (!is_null($tasks)) {
+        if (isset($tasks)) {
             // タスクデータの格納
             $task_data = array();
             $task_data['title'] = $tasks->title;
@@ -46,10 +46,6 @@ class HomeController extends Controller
 
             return view('home');
         }
-
-        
-
-
         
     }
 
