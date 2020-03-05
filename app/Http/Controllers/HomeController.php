@@ -57,9 +57,21 @@ class HomeController extends Controller
         // ログインユーザの全タスクを取得
         $tasks = $user->tasks;
 
+
+        foreach ($tasks as $task) {
+            if ($task['status'] === 1) {
+                $task['status'] = 'waiting';
+            } elseif ($task['status'] === 2) {
+                $task['status'] = 'working';
+            } else {
+                $task['status'] = 'done';
+            }
+        }
+
         return view('tasklist', [
             'tasks' => $tasks,
         ]);
+
     }
 
     public function create(Request $request)
@@ -134,8 +146,17 @@ class HomeController extends Controller
 
         // ログインユーザの全タスクを取得
         // todo一覧表示用
-        // $tasks = DB::table('tasks')->where('user_id', $auth_user_id)->get();
         $tasks = $user->tasks;
+
+        foreach ($tasks as $task) {
+            if ($task['status'] === 1) {
+                $task['status'] = 'waiting';
+            } elseif ($task['status'] === 2) {
+                $task['status'] = 'working';
+            } else {
+                $task['status'] = 'done';
+            }
+        }
 
         // 検索リクエスト情報の受け取り
         $bufTitle = $request->title;
@@ -342,6 +363,17 @@ class HomeController extends Controller
 
         // 検索結果を返す
         if (isset($searchResults)) {
+
+            foreach ($searchResults as $item) {
+                if ($item['status'] === 1) {
+                    $item['status'] = 'waiting';
+                } elseif ($item['status'] === 2) {
+                    $item['status'] = 'working';
+                } else {
+                    $item['status'] = 'done';
+                }
+            }
+
             return view('tasklist', [
                 'searchResults' => $searchResults,
                 'tasks' => $tasks,

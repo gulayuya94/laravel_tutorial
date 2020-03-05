@@ -72,9 +72,9 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-1">
-                                        @if ( $searchResult->status === 1 )
+                                        @if ( $searchResult->status === 'waiting' )
                                             <p class="btn btn-warning btn-sm" style="color: #333;">waiting</p>
-                                        @elseif ( $searchResult->status === 2 )
+                                        @elseif ( $searchResult->status === 'working' )
                                             <p class="btn btn-primary btn-sm">working</p>
                                         @else
                                             <p class="btn btn-secondary btn-sm">done</p>
@@ -130,9 +130,9 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-1">
-                                    @if ( $task->status === 1 )
+                                    @if ( $task->status === 'waiting' )
                                         <p class="btn btn-warning btn-sm" style="color: #333; cursor: default">waiting</p>
-                                    @elseif ( $task->status === 2 )
+                                    @elseif ( $task->status === 'working' )
                                         <p class="btn btn-primary btn-sm" style="cursor: default">working</p>
                                     @else
                                         <p class="btn btn-secondary btn-sm" style="cursor: default">done</p>
