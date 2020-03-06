@@ -25,11 +25,11 @@
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control" id="status" name="status">
-                                @if ($status === 1)
+                                @if ($status === 'waiting')
                                     <option value="1">waiting</option>
                                     <option value="2">working</option>
                                     <option value="3">done</option>
-                                @elseif ($status === 2)
+                                @elseif ($status === 'working')
                                     <option value="1">waiting</option>
                                     <option value="2" selected>working</option>
                                     <option value="3">done</option>

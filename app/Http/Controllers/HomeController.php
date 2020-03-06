@@ -26,11 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // ログインユーザ情報を取得
-        $user = Auth::user();
-
         // ログインユーザのタスクの中からidが一番大きいもの(一番新しい)タスクを取得
-        $task = $user->tasks->where('status', 1)->sortByDesc('id')->first();
+        $task = Task::newTodo();
 
         if (isset($task)) {
             // タスクデータの格納
@@ -51,21 +48,12 @@ class HomeController extends Controller
 
     public function showTodoList()
     {
-        // ログインユーザ情報を取得
-        $user = Auth::user();
-
         // ログインユーザの全タスクを取得
-        $tasks = $user->tasks;
+        $tasks = Task::get();
 
-
+        // todoのstatusの値を文字列に変換
         foreach ($tasks as $task) {
-            if ($task['status'] === 1) {
-                $task['status'] = 'waiting';
-            } elseif ($task['status'] === 2) {
-                $task['status'] = 'working';
-            } else {
-                $task['status'] = 'done';
-            }
+            $task['status'] = $task->todo_status;
         }
 
         return view('todolist', [
@@ -107,18 +95,15 @@ class HomeController extends Controller
 
     public function edit($id)
     {
-        // ログインユーザ情報を取得
-        $user = Auth::user();
-
         // idを元にtodoの情報を取得
-        $task = $user->tasks->where('id', $id)->first();
+        $task = Task::where('id', $id)->first();
 
         // データの格納
         $task_data = array();
         $task_data['id'] = $task->id;
         $task_data['title'] = $task->title;
         $task_data['content'] = $task->content;
-        $task_data['status'] = $task->status;
+        $task_data['status'] = $task->todo_status;
         $task_data['due_date'] = $task->due_date;
         
         // 編集ページに受け渡し
@@ -148,14 +133,9 @@ class HomeController extends Controller
         // todo一覧表示用
         $tasks = $user->tasks;
 
+        // todoのstatusの値を文字列に変換
         foreach ($tasks as $task) {
-            if ($task['status'] === 1) {
-                $task['status'] = 'waiting';
-            } elseif ($task['status'] === 2) {
-                $task['status'] = 'working';
-            } else {
-                $task['status'] = 'done';
-            }
+            $task['status'] = $task->todo_status;
         }
 
         // 検索リクエスト情報の受け取り
