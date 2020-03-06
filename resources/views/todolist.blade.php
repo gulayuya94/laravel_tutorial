@@ -66,7 +66,12 @@
                     </div>
                 </div>
 
-                @if (isset( $searchResults ))
+                @if (isset($searchResults))
+                @if ( $searchResults->isEmpty() )
+                    <div class="card-body">
+                        N/A
+                    </div>
+                @else
                     @foreach ($searchResults as $searchResult)
                         <div class="card-body">
                             <div class="container">
@@ -104,11 +109,6 @@
                         </div>
                     @endforeach
                 @endif
-
-                @if (isset( $noResult ))
-                    <div class="card-body">
-                        N/A
-                    </div>
                 @endif
 
             </div>

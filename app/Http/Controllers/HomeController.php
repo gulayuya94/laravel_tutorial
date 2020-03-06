@@ -126,12 +126,8 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        // ログインユーザ情報を取得
-        $user = Auth::user();
-
-        // ログインユーザの全タスクを取得
-        // todo一覧表示用
-        $tasks = $user->tasks;
+        // ログインユーザの全タスクを取得(一覧表示用)
+        $tasks = Task::get();
 
         // todoのstatusの値を文字列に変換
         foreach ($tasks as $task) {
@@ -147,223 +143,39 @@ class HomeController extends Controller
         $searchStartDate = $request->startDate;
         $searchEndDate = $request->endDate;
 
-        // 単独検索判定用
-        $judge = array();
-
-        // 複数条件判定用
-        $judges = 0;
-
-        // 検索リクエストを元にtasksテーブルから該当する行を取得する
-        if (!is_null($bufTitle)) {
-            $resSearchTitle = $user->tasks()->where('title', 'like', $searchTitle)->get();
-
-            $bufTitleId = array();
-
-            foreach ($resSearchTitle as $item) {
-                array_push($bufTitleId, $item->id);
-            }
-
-            array_push($judge, 1);
-
-            $judges += 1;
+        if (is_null($bufTitle) and is_null($bufContent) and is_null($searchStatus) and is_null($searchStartDate) and is_null($searchEndDate)) {
             
-
+            return view('todoList', [
+                'tasks' => $tasks,
+            ]);
+            
         } else {
-            $bufTitleId = array();
-        }
-
-        if (!is_null($bufContent)) {
-            $resSearchContent = $user->tasks()->where('content', 'like', $searchContent)->get();
-
-            $bufContentId = array();
-
-            foreach ($resSearchContent as $item) {
-                array_push($bufContentId, $item->id);
-            }
-
-            array_push($judge, 2);
-
-            $judges += 10;
-
-        } else {
-            $bufContentId = array();
-        }
-
-        if (!is_null($searchStatus)) {
-            $resSearchStatus = $user->tasks()->where('status', $searchStatus)->get();
-
-            $bufStatusId = array();
-
-            foreach ($resSearchStatus as $item) {
-                array_push($bufStatusId, $item->id);
-            }
-
-            array_push($judge, 3);
-
-            $judges += 100;
-
-        } else {
-            $bufStatusId = array();
-        }
-
-        if (!is_null($searchStartDate) and !is_null($searchEndDate)) {
-            $resSearchDate = $user->tasks()->whereBetween('due_date', [$searchStartDate, $searchEndDate])->get();
-
-            $bufDateId = array();
-
-            foreach ($resSearchDate as $item) {
-                array_push($bufDateId, $item->id);
-            }
-
-            array_push($judge, 4);
-
-            $judges += 1000;
-
-        } elseif (!is_null($searchStartDate) and is_null($searchEndDate)) {
-            $resSearchDate = $user->tasks()->where('due_date', '>=', $searchStartDate)->get();
-
-            $bufDateId = array();
-
-            foreach ($resSearchDate as $item) {
-                array_push($bufDateId, $item->id);
-            }
-
-            array_push($judge, 4);
-
-            $judges += 1000;
-
-        } elseif (is_null($searchStartDate) and !is_null($searchEndDate)) {
-            $resSearchDate = $user->tasks()->where('due_date', '<=', $searchEndDate)->get();
-
-            $bufDateId = array();
-
-            foreach ($resSearchDate as $item) {
-                array_push($bufDateId, $item->id);
-            }
-
-            array_push($judge, 4);
-
-            $judges += 1000;
-
-        } else {
-            $bufDateId = array();
-        }
-
-        // 取得した行の中からtaskのidが共通するものだけを検索結果としてviewに渡す
-
-        $counter = count($judge);
-
-        if ($counter === 1) {
-            // 単一条件検索の場合は$judgeの数字から検索条件の種類を特定して、
-            // $buf~idのidから再度tasksテーブルを検索して対応するidの行を取得
-            // 取得結果をviewに渡す
-
-            switch ($judge[0]) {
-                case 1:
-                    $searchResults = $user->tasks()->whereIn('id', $bufTitleId)->get();
-                    break;
-
-                case 2:
-                    $searchResults = $user->tasks()->whereIn('id', $bufContentId)->get();
-                    break;
-
-                case 3:
-                    $searchResults = $user->tasks()->whereIn('id', $bufStatusId)->get();
-                    break;
-
-                case 4:
-                    // $searchResults = DB::table('tasks')->whereIn('id', $bufDateId)->get();
-                    $searchResults = $user->tasks()->whereIn('id', $bufDateId)->get();
-                    break;
-            }
-
-        } elseif ($counter > 1) {
-            // 複数条件検索の場合は共通idだけ抽出
-
-            switch ($judges) {
-                case 11:
-                    $targetId = array_intersect($bufTitleId, $bufContentId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 101:
-                    $targetId = array_intersect($bufTitleId, $bufStatusId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 110:
-                    $targetId = array_intersect($bufContentId, $bufStatusId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 111:
-                    $targetId = array_intersect($bufTitleId, $bufContentId, $bufStatusId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1001:
-                    $targetId = array_intersect($bufTitleId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1010:
-                    $targetId = array_intersect($bufContentId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1011:
-                    $targetId = array_intersect($bufTitleId, $bufContentId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1100:
-                    $targetId = array_intersect($bufStatusId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1101:
-                    $targetId = array_intersect($bufTitleId, $bufStatusId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1110:
-                    $targetId = array_intersect($bufContentId, $bufStatusId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-
-                case 1111:
-                    $targetId = array_intersect($bufTitleId, $bufContentId, $bufStatusId, $bufDateId);
-                    $searchResults = $user->tasks()->whereIn('id', $targetId)->get();
-                    break;
-            }
-        } else {
-            // 0の場合(何も入れずに検索を実行)は、メッセージを返す
-            $noResult = '';
-        }
-
-        // 検索結果を返す
-        if (isset($searchResults)) {
-
+            $searchResults = Task::
+            when($bufTitle, function ($query) use ($searchTitle) {
+                return $query->where('title', 'like', $searchTitle);
+            })
+            ->when($bufContent, function ($query) use ($searchContent) {
+                return $query->where('content', 'like', $searchContent);
+            })
+            ->when($searchStatus, function ($query) use ($searchStatus) {
+                return $query->where('status', $searchStatus);
+            })
+            ->when($searchStartDate, function ($query) use ($searchStartDate) {
+                return $query->where('due_date', '>=', $searchStartDate);
+            })
+            ->when($searchEndDate, function ($query) use ($searchEndDate) {
+                return $query->where('due_date', '<=', $searchEndDate);
+            })
+            ->get();
+            
             foreach ($searchResults as $item) {
-                if ($item['status'] === 1) {
-                    $item['status'] = 'waiting';
-                } elseif ($item['status'] === 2) {
-                    $item['status'] = 'working';
-                } else {
-                    $item['status'] = 'done';
-                }
+                $item['status'] = $item->todo_status;
             }
 
             return view('todoList', [
                 'searchResults' => $searchResults,
                 'tasks' => $tasks,
             ]);
-        } else {
-            return view('todoList', [
-                'noResult' => $noResult,
-                'tasks' => $tasks,
-            ]);
         }
-
     }
 }
