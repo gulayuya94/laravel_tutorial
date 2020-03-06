@@ -27,8 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         // ログインユーザのタスクの中からidが一番大きいもの(一番新しい)タスクを取得
-        // $task = Task::newTodo();
-        $task = Task::where('status', 1)->orderBy('id', 'desc')->first();
+        $task = Task::latestTodo()->first();
 
         if (isset($task)) {
             // タスクデータの格納
