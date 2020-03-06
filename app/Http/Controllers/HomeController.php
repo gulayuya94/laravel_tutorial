@@ -51,14 +51,11 @@ class HomeController extends Controller
         // ログインユーザの全タスクを取得
         $tasks = Task::get();
 
-        // todoのstatusの値を文字列に変換
-        foreach ($tasks as $task) {
-            $task['status'] = $task->todo_status;
-        }
-
         return view('todolist', [
             'tasks' => $tasks,
         ]);
+
+        // echo var_dump($tasks[4]->todo_status);
 
     }
 
@@ -141,11 +138,6 @@ class HomeController extends Controller
         // ログインユーザの全タスクを取得(一覧表示用)
         $tasks = Task::get();
 
-        // todoのstatusの値を文字列に変換
-        foreach ($tasks as $task) {
-            $task['status'] = $task->todo_status;
-        }
-
         // 検索リクエスト情報の受け取り
         $bufTitle = $request->title;
         $searchTitle = '%' . $bufTitle . '%';
@@ -181,10 +173,6 @@ class HomeController extends Controller
         })
         ->get();
         
-        foreach ($searchResults as $item) {
-            $item['status'] = $item->todo_status;
-        }
-
         return view('todoList', [
             'searchResults' => $searchResults,
             'tasks' => $tasks,

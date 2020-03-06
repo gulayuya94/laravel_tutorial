@@ -78,12 +78,12 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-1">
-                                        @if ( $searchResult->status === 'waiting' )
-                                            <p class="btn btn-warning btn-sm" style="color: #333;">waiting</p>
+                                        @if ( $searchResult->todo_status === 'waiting' )
+                                            <p class="btn btn-warning btn-sm" style="color: #333;">{{$searchResult->status}}</p>
                                         @elseif ( $searchResult->status === 'working' )
-                                            <p class="btn btn-primary btn-sm">working</p>
+                                            <p class="btn btn-primary btn-sm">{{$searchResult->status}}</p>
                                         @else
-                                            <p class="btn btn-secondary btn-sm">done</p>
+                                            <p class="btn btn-secondary btn-sm">{{$searchResult->status}}</p>
                                         @endif
                                     </div>
                                     <div class="col-3">
@@ -131,12 +131,12 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-1">
-                                    @if ( $task->status === 'waiting' )
-                                        <p class="btn btn-warning btn-sm" style="color: #333; cursor: default">waiting</p>
+                                    @if ( $task->todo_status === 'waiting' )
+                                        <p class="btn btn-warning btn-sm" style="color: #333; cursor: default">{{$task->status}}</p>
                                     @elseif ( $task->status === 'working' )
-                                        <p class="btn btn-primary btn-sm" style="cursor: default">working</p>
+                                        <p class="btn btn-primary btn-sm" style="cursor: default">{{$task->status}}</p>
                                     @else
-                                        <p class="btn btn-secondary btn-sm" style="cursor: default">done</p>
+                                        <p class="btn btn-secondary btn-sm" style="cursor: default">{{$task->status}}</p>
                                     @endif
                                 </div>
                                 <div class="col-3">
