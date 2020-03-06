@@ -73,6 +73,12 @@ class HomeController extends Controller
         $newTask->content = $request->content;
         $newTask->due_date = $request->date;
 
+        $validatedData = $request->validate([
+            'title' => 'required|max:40',
+            'content' => 'required|max:200',
+            'date' => 'required|date|after:yesterday',
+        ]);
+
         // その他情報の格納
         $newTask->user_id = Auth::id();
         $newTask->status = 1;
@@ -114,6 +120,12 @@ class HomeController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'date' => 'date|after:yesterday',
+        ]);
+
         Task::find($id)->update([
             'title' => $request->title,
             'content' => $request->content,
@@ -144,39 +156,39 @@ class HomeController extends Controller
         $searchStartDate = $request->startDate;
         $searchEndDate = $request->endDate;
 
-        if (is_null($bufTitle) and is_null($bufContent) and is_null($searchStatus) and is_null($searchStartDate) and is_null($searchEndDate)) {
-            
-            return view('todoList', [
-                'tasks' => $tasks,
-            ]);
-            
-        } else {
-            $searchResults = Task::
-            when($bufTitle, function ($query) use ($searchTitle) {
-                return $query->where('title', 'like', $searchTitle);
-            })
-            ->when($bufContent, function ($query) use ($searchContent) {
-                return $query->where('content', 'like', $searchContent);
-            })
-            ->when($searchStatus, function ($query) use ($searchStatus) {
-                return $query->where('status', $searchStatus);
-            })
-            ->when($searchStartDate, function ($query) use ($searchStartDate) {
-                return $query->where('due_date', '>=', $searchStartDate);
-            })
-            ->when($searchEndDate, function ($query) use ($searchEndDate) {
-                return $query->where('due_date', '<=', $searchEndDate);
-            })
-            ->get();
-            
-            foreach ($searchResults as $item) {
-                $item['status'] = $item->todo_status;
-            }
+        $validatedData = $request->validate([
+            'title' => 'required_without_all:content,status,startDate,endDate',
+            'content' => '',
+            'status' => '',
+            'startDate' => '',
+            'endDate' => '',
+        ]);
 
-            return view('todoList', [
-                'searchResults' => $searchResults,
-                'tasks' => $tasks,
-            ]);
+        $searchResults = Task::
+        when($bufTitle, function ($query) use ($searchTitle) {
+            return $query->where('title', 'like', $searchTitle);
+        })
+        ->when($bufContent, function ($query) use ($searchContent) {
+            return $query->where('content', 'like', $searchContent);
+        })
+        ->when($searchStatus, function ($query) use ($searchStatus) {
+            return $query->where('status', $searchStatus);
+        })
+        ->when($searchStartDate, function ($query) use ($searchStartDate) {
+            return $query->where('due_date', '>=', $searchStartDate);
+        })
+        ->when($searchEndDate, function ($query) use ($searchEndDate) {
+            return $query->where('due_date', '<=', $searchEndDate);
+        })
+        ->get();
+        
+        foreach ($searchResults as $item) {
+            $item['status'] = $item->todo_status;
         }
+
+        return view('todoList', [
+            'searchResults' => $searchResults,
+            'tasks' => $tasks,
+        ]);
     }
 }

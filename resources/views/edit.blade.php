@@ -11,6 +11,8 @@
                 <div class="card-header">Edit Your Todo</div>
 
                 <div class="card-body">
+                    @include('layouts.error')
+
                     <form action="{{ route('update', $id) }}" method="POST">
                         @csrf
                         @method('put')

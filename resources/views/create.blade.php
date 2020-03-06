@@ -11,6 +11,8 @@
                 <div class="card-header">Add Your Todo</div>
 
                 <div class="card-body">
+                    @include('layouts.error')
+
                     <form action="{{ route('create') }}" method="POST">
                         @csrf
                         <div class="form-group">

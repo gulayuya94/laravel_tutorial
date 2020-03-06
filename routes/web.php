@@ -11,34 +11,6 @@
 |
 */
 
-// Route::group(['middleware' => 'auth'], function() {
-//     // topページ
-//     Route::get('/home', 'HomeController@index')->name('home');
-
-//     // todo一覧ページ
-//     Route::get('/tasklist', 'HomeController@showTaskList')->name('tasklist');
-
-//     // todo作成ページ
-//     Route::get('/create', function () {
-//         return view('create');
-//     });
-
-//     // todo作成リクエスト
-//     Route::post('/create', 'HomeController@create')->name('create');
-
-//     // todo削除リクエスト
-//     Route::delete('/delete/{id}', 'HomeController@delete')->name('delete');
-
-//     // todo詳細ページ
-//     Route::get('/edit/{id}', 'HomeController@edit')->name('edit');
-
-//     // todo編集リクエスト
-//     Route::post('/update/{id}', 'HomeController@update')->name('update');
-
-//     // 検索リクエスト
-//     Route::post('/search', 'HomeController@search');
-// });
-
 Route::group(['middleware' => 'auth'], function() {
     // topページ
     Route::get('/todos', 'HomeController@index')->name('top');
