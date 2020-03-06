@@ -11,7 +11,7 @@
                 <div class="card-header">Search Your Todo</div>
                 <div class="card-body">
                     @include('layouts.error')
-                    <form action="/todos/search" method="POST">
+                    <form action="/todos/search" method="GET">
                         @csrf
                         <div class="row">
                             <div class="col-6">
