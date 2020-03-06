@@ -49,7 +49,7 @@ class HomeController extends Controller
         
     }
 
-    public function showTaskList()
+    public function showTodoList()
     {
         // ログインユーザ情報を取得
         $user = Auth::user();
@@ -68,7 +68,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('tasklist', [
+        return view('todolist', [
             'tasks' => $tasks,
         ]);
 
@@ -92,7 +92,7 @@ class HomeController extends Controller
         $newTask->save();
 
         // 保存後リダイレクト
-        return redirect('/tasklist');
+        return redirect('/todos/list');
 
     }
 
@@ -101,7 +101,7 @@ class HomeController extends Controller
         Task::find($id)->delete();
 
         // 削除後リダイレクト
-        return redirect('/tasklist');
+        return redirect('/todos/list');
 
     }
 
@@ -136,7 +136,7 @@ class HomeController extends Controller
         ]);
 
         // 編集後リダイレクト
-        return redirect('/tasklist');
+        return redirect('/todos/list');
     }
 
     public function search(Request $request)
@@ -374,12 +374,12 @@ class HomeController extends Controller
                 }
             }
 
-            return view('tasklist', [
+            return view('todoList', [
                 'searchResults' => $searchResults,
                 'tasks' => $tasks,
             ]);
         } else {
-            return view('tasklist', [
+            return view('todoList', [
                 'noResult' => $noResult,
                 'tasks' => $tasks,
             ]);

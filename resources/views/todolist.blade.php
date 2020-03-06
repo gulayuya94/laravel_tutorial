@@ -10,7 +10,7 @@
             <div class="card mb-3">
                 <div class="card-header">Search Your Todo</div>
                 <div class="card-body">
-                    <form action="/search" method="POST">
+                    <form action="/todos/search" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-6">

@@ -13,6 +13,7 @@
                 <div class="card-body">
                     <form action="{{ route('update', $id) }}" method="POST">
                         @csrf
+                        @method('put')
                         <div class="form-group">
                             <label for="title">title</label>
                             <input type="text" id="title" name="title" class="form-control" value="{{ $title }}">                            
