@@ -24,9 +24,9 @@ class Task extends Model
     }
 
     // ログインユーザのtodoで一番新しいwaitingのtodoを一件取得
-    public function scopeNewTodo($query)
+    public function scopeLatestTodo($query)
     {
-        return $query->where('status', 1)->orderBy('id', 'desc')->first();
+        return $query->where('status', 1)->orderBy('id', 'desc');
     }
 
     public function getTodoStatusAttribute()
