@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ValiTodoRequest;
+use App\Http\Requests\SearchTodoRequest;
 use App\Task;
 use Auth;
 
@@ -55,15 +57,9 @@ class HomeController extends Controller
             'tasks' => $tasks,
         ]);
 
-        // foreach ($tasks as $task) {
-        //     $task['status'] = $task->todo_status;
-        // }
-
-        // var_dump($tasks[2]->todo_status);
-
     }
 
-    public function create(Request $request)
+    public function create(ValiTodoRequest $request)
     {
         // インスタンス生成
         $newTask = new Task;
@@ -72,12 +68,6 @@ class HomeController extends Controller
         $newTask->title = $request->title;
         $newTask->content = $request->content;
         $newTask->due_date = $request->date;
-
-        $validatedData = $request->validate([
-            'title' => 'required|max:40',
-            'content' => 'required|max:200',
-            'date' => 'required|date|after:yesterday',
-        ]);
 
         // その他情報の格納
         $newTask->user_id = Auth::id();
@@ -118,14 +108,8 @@ class HomeController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(ValiTodoRequest $request, $id)
     {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'date' => 'date|after:yesterday',
-        ]);
-
         Task::find($id)->update([
             'title' => $request->title,
             'content' => $request->content,
@@ -137,7 +121,7 @@ class HomeController extends Controller
         return redirect('/todos/list');
     }
 
-    public function search(Request $request)
+    public function search(SearchTodoRequest $request)
     {
         // ログインユーザの全タスクを取得(一覧表示用)
         $tasks = Task::get();
@@ -150,14 +134,6 @@ class HomeController extends Controller
         $searchStatus = $request->status;
         $searchStartDate = $request->startDate;
         $searchEndDate = $request->endDate;
-
-        $validatedData = $request->validate([
-            'title' => 'required_without_all:content,status,startDate,endDate',
-            'content' => '',
-            'status' => '',
-            'startDate' => '',
-            'endDate' => '',
-        ]);
 
         $searchResults = Task::
         when($bufTitle, function ($query) use ($searchTitle) {

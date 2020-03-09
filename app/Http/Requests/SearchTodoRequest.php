@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValiTodoRequest extends FormRequest
+class SearchTodoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,11 @@ class ValiTodoRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:40',
-            'content' => 'required|max:200',
-            'date' => 'required|date|after:yesterday',
+            'title' => 'max:40|required_without_all:content,status,startDate,endDate',
+            'content' => 'max:200',
+            'status' => '',
+            'startDate' => '',
+            'endDate' => '',
         ];
     }
 }
