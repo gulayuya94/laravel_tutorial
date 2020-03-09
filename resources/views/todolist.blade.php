@@ -132,11 +132,11 @@
                             <div class="row">
                                 <div class="col-1">
                                     @if ( $task->todo_status === 'waiting' )
-                                        <p class="btn btn-warning btn-sm" style="color: #333; cursor: default">{{$task->status}}</p>
-                                    @elseif ( $task->status === 'working' )
-                                        <p class="btn btn-primary btn-sm" style="cursor: default">{{$task->status}}</p>
+                                        <p class="btn btn-warning btn-sm" style="color: #333; cursor: default">{{$task->todo_status}}</p>
+                                    @elseif ( $task->todo_status === 'working' )
+                                        <p class="btn btn-primary btn-sm" style="cursor: default">{{$task->todo_status}}</p>
                                     @else
-                                        <p class="btn btn-secondary btn-sm" style="cursor: default">{{$task->status}}</p>
+                                        <p class="btn btn-secondary btn-sm" style="cursor: default">{{$task->todo_status}}</p>
                                     @endif
                                 </div>
                                 <div class="col-3">

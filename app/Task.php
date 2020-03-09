@@ -32,11 +32,11 @@ class Task extends Model
     public function getTodoStatusAttribute()
     {
         if ($this->status === 1) {
-            return $this->status = 'waiting';
+            return  'waiting';
         } elseif ($this->status === 2) {
-            return $this->status = 'working';
+            return 'working';
         } else {
-            return $this->status = 'done';
+            return  'done';
         }
     }
 

@@ -55,7 +55,11 @@ class HomeController extends Controller
             'tasks' => $tasks,
         ]);
 
-        // echo var_dump($tasks[4]->todo_status);
+        // foreach ($tasks as $task) {
+        //     $task['status'] = $task->todo_status;
+        // }
+
+        // var_dump($tasks[2]->todo_status);
 
     }
 
