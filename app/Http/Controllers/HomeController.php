@@ -31,6 +31,7 @@ class HomeController extends Controller
         // ログインユーザのタスクの中からidが一番大きいもの(一番新しい)タスクを取得
         $task = Task::latestTodo()->first();
 
+        // ログインユーザに該当するtodoがあれば、
         if (isset($task)) {
             // タスクデータの格納
             $task_data = array();
@@ -43,6 +44,7 @@ class HomeController extends Controller
 
         } else {
 
+            // 該当するtodoがない場合はtodoのデータを渡さずtop画面を表示
             return view('home');
         }
         
@@ -76,7 +78,6 @@ class HomeController extends Controller
         // 保存
         $newTask->save();
 
-        // 保存後リダイレクト
         return redirect('/todos/list');
 
     }
@@ -85,7 +86,6 @@ class HomeController extends Controller
     {
         Task::find($id)->delete();
 
-        // 削除後リダイレクト
         return redirect('/todos/list');
 
     }
@@ -103,7 +103,6 @@ class HomeController extends Controller
         $task_data['status'] = $task->todo_status;
         $task_data['due_date'] = $task->due_date;
         
-        // 編集ページに受け渡し
         return view('edit', $task_data);
 
     }
@@ -117,7 +116,6 @@ class HomeController extends Controller
             'due_date' => $request->date,
         ]);
 
-        // 編集後リダイレクト
         return redirect('/todos/list');
     }
 
@@ -135,6 +133,9 @@ class HomeController extends Controller
         $searchStartDate = $request->startDate;
         $searchEndDate = $request->endDate;
 
+        // 受け取った検索条件を元に該当するtodoを取得
+        // 　検索条件に何も入れずに検索した場合はバリデーションで弾くようになっているので、
+        // 　コントローラー側ではただ受け取った情報を基に該当するtodoを返す
         $searchResults = Task::
         when($bufTitle, function ($query) use ($searchTitle) {
             return $query->where('title', 'like', $searchTitle);

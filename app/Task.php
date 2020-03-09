@@ -17,18 +17,18 @@ class Task extends Model
         parent::boot();
 
         static::addGlobalScope('id', function (Builder $builder) {
-            // ログインユーザーのtodoのみ
-            // $builder->where('user_id', auth()->id());
+            // ログインユーザーのtodoのみに絞る
             $builder->where('user_id', Auth::id());
         });
     }
 
-    // ログインユーザのtodoで一番新しいwaitingのtodoを一件取得
+    // statusがwaitingのものを降順に並べ替える
     public function scopeLatestTodo($query)
     {
         return $query->where('status', 1)->orderBy('id', 'desc');
     }
 
+    // tasksテーブルのstatusの値からそれぞれの状態を返す
     public function getTodoStatusAttribute()
     {
         if ($this->status === 1) {
@@ -39,7 +39,4 @@ class Task extends Model
             return  'done';
         }
     }
-
-
-    
 }

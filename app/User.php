@@ -39,6 +39,7 @@ class User extends Authenticatable
 
     public function tasks()
     {
+        // ユーザは複数のtodoを持つ
         return $this->hasMany('App\Task');
     }
 }
