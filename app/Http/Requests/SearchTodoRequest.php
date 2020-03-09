@@ -24,8 +24,8 @@ class SearchTodoRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'max:40|required_without_all:content,status,startDate,endDate',
-            'content' => 'max:200',
+            'title' => 'required_without_all:content,status,startDate,endDate',
+            'content' => '',
             'status' => '',
             'startDate' => '',
             'endDate' => '',
