@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\TodoRequest;
+use App\Http\Requests\CreateTodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
 use App\Http\Requests\SearchTodoRequest;
 use App\Task;
 use Auth;
@@ -61,7 +62,7 @@ class HomeController extends Controller
 
     }
 
-    public function create(TodoRequest $request)
+    public function create(CreateTodoRequest $request)
     {
         // インスタンス生成
         $newTask = new Task;
@@ -107,7 +108,7 @@ class HomeController extends Controller
 
     }
 
-    public function update(TodoRequest $request, $id)
+    public function update(UpdateTodoRequest $request, $id)
     {
         Task::find($id)->update([
             'title' => $request->title,
