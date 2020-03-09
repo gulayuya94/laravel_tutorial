@@ -127,9 +127,9 @@ class HomeController extends Controller
         $tasks = Task::get();
 
         // 検索リクエスト情報の受け取り
-        $bufTitle = $request->title;
+        $bufTitle = str_replace(['%', '_'], ['\%', '\_'], $request->title);
         $searchTitle = '%' . $bufTitle . '%';
-        $bufContent = $request->content;
+        $bufContent = str_replace(['%', '_'], ['\%', '\_'], $request->content);
         $searchContent = '%' . $bufContent . '%';
         $searchStatus = $request->status;
         $searchStartDate = $request->startDate;

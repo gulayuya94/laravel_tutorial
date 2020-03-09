@@ -79,11 +79,11 @@
                                 <div class="row">
                                     <div class="col-1">
                                         @if ( $searchResult->todo_status === 'waiting' )
-                                            <p class="btn btn-warning btn-sm" style="color: #333;">{{$searchResult->status}}</p>
-                                        @elseif ( $searchResult->status === 'working' )
-                                            <p class="btn btn-primary btn-sm">{{$searchResult->status}}</p>
+                                            <p class="btn btn-warning btn-sm" style="color: #333;">{{$searchResult->todo_status}}</p>
+                                        @elseif ( $searchResult->todo_status === 'working' )
+                                            <p class="btn btn-primary btn-sm">{{$searchResult->todo_status}}</p>
                                         @else
-                                            <p class="btn btn-secondary btn-sm">{{$searchResult->status}}</p>
+                                            <p class="btn btn-secondary btn-sm">{{$searchResult->todo_status}}</p>
                                         @endif
                                     </div>
                                     <div class="col-3">
