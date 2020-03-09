@@ -13,13 +13,14 @@ class TasksTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tasks')->insert([
-            'user_id' => 1,
-            'title' => 'sampleTodo',
-            'content' => 'sampleContent',
-            'status' => 1,
-            'due_date' => Carbon::now(),
-            'created_at' => Carbon::now(),
-        ]);
+        // DB::table('tasks')->insert([
+        //     'user_id' => 1,
+        //     'title' => 'sampleTodo',
+        //     'content' => 'sampleContent',
+        //     'status' => 1,
+        //     'due_date' => Carbon::now(),
+        //     'created_at' => Carbon::now(),
+        // ]);
+        factory(App\Task::class, 10)->create();
     }
 }
