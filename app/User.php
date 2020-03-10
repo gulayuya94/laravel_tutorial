@@ -42,4 +42,10 @@ class User extends Authenticatable
         // ユーザは複数のtodoを持つ
         return $this->hasMany('App\Task');
     }
+
+    public function follows()
+    {
+        // ユーザは複数のfollowを持つ
+        return $this->hasMany('App\Follow');
+    }
 }
