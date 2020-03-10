@@ -24,9 +24,10 @@ class SearchTodoRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required_without_all:content,status,startDate,endDate',
+            'title' => 'required_without_all:content,status,private,startDate,endDate',
             'content' => '',
             'status' => '',
+            'private' => '',
             'startDate' => '',
             'endDate' => '',
         ];

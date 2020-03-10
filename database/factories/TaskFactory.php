@@ -11,7 +11,7 @@ $factory->define(App\Task::class, function (Faker $faker) {
         'title' => 'title' . $faker->numberBetween($min = 1, $max = 1000),
         'content' => 'content' . $faker->numberBetween($min = 1, $max = 1000),
         'status' => $faker->numberBetween($min = 1, $max = 3),
-        'private' => $faker->numberBetween($min = 0, $max = 1),
+        'private' => $faker->numberBetween($min = 1, $max = 2),
         'due_date' => $faker->datetimeBetween($startDate = 'now', $endDate = '+1 years')->format('Y-m-d'),
     ];
 });

@@ -55,7 +55,21 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary float-right">Search</button>
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="private">This todo is</label>
+                                    <select class="form-control" id="private" name="private">
+                                        <option value="" selected></option>
+                                        <option value="1">public</option>
+                                        <option value="2">private</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-9" style="margin-top: 40px;">
+                                <button type="submit" class="btn btn-primary float-right">Search</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="card-body" style="border-bottom: solid 1px #333; border-top: solid 1px #333;">

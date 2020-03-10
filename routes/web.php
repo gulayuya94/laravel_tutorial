@@ -18,6 +18,12 @@ Route::group(['middleware' => 'auth'], function() {
     // todo一覧ページ
     Route::get('/todos/list', 'HomeController@showTodoList')->name('todoList');
 
+    // user一覧ページ
+    Route::get('/todos/userlist', 'HomeController@showUserList')->name('userList');
+
+    // user詳細ページ
+    Route::get('/todos/user/{account_name}', 'HomeController@show')->name('show');
+
     // todo作成ページ
     Route::get('/todos/create', function () {
         return view('create');

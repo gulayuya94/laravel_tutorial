@@ -43,6 +43,18 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="private">This todo is</label>
+                            <select class="form-control" id="private" name="private">
+                                @if ($private === 'public')
+                                    <option value="1" selected>public</option>
+                                    <option value="2">private</option>
+                                @else
+                                    <option value="1">public</option>
+                                    <option value="2" selected>private</option>
+                                @endif
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="date">due-date</label>
                             <input type="date" id="date" name="date" class="form-control" value="{{ $due_date }}">
                         </div>
