@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTodoRequest;
 use App\Http\Requests\SearchTodoRequest;
 use App\Task;
 use App\User;
+use App\Follow;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -36,6 +37,14 @@ class HomeController extends Controller
         // ログインユーザのタスクの中からidが一番大きいもの(一番新しい)タスクを取得
         $task = $user->tasks()->latestTodo()->first();
 
+        // ログインユーザがフォローしているユーザを取得
+        $following_users_id = Follow::where('follower_id', $user->id)->pluck('followee_id')->toArray();
+        $followings = User::whereIn('id', $following_users_id)->get(['name', 'account_name']);
+
+        // ログインユーザをフォローしているユーザを取得
+        $followed_users_id = Follow::where('followee_id', $user->id)->pluck('follower_id')->toArray();
+        $followers = User::whereIn('id', $followed_users_id)->get(['name', 'account_name']);
+
         // ログインユーザに該当するtodoがあれば、
         if (isset($task)) {
             // タスクデータの格納
@@ -45,12 +54,19 @@ class HomeController extends Controller
             $task_data['due_date'] = $task->due_date;
             $task_data['id'] = $task->id;
 
-            return view('home', $task_data);
+            return view('home', [
+                'task_data' => $task_data,
+                'followings' => $followings,
+                'followers' => $followers,
+            ]);
 
         } else {
 
             // 該当するtodoがない場合はtodoのデータを渡さずtop画面を表示
-            return view('home');
+            return view('home', [
+                'followings' => $followings,
+                'followers' => $followers,
+            ]);
         }
         
     }
@@ -83,13 +99,22 @@ class HomeController extends Controller
 
     public function show($account_name)
     {
+        // ログインユーザの情報を取得
+        $user = Auth::user();
+
         // account_nameからuserのidを取得
         $user_id = User::where('account_name', $account_name)->pluck('id');
         $user_name = User::where('id', $user_id)->pluck('name');
 
-        // idに紐づくtodo(公開todo)を取得
-        // privateの値が1なら公開、2なら非公開
-        $tasks = Task::where('user_id', $user_id)->where('private', 1)->get();
+        // idに紐づくtodoを取得
+        // ログインユーザがそのユーザをフォローしていれば全てのtodoを表示
+        // そうでなければpublicのtodoのみを表示
+
+        if (Follow::where('follower_id', $user->id)->where('followee_id', $user_id)->exists()) {
+            $tasks = Task::where('user_id', $user_id)->get();
+        } else {
+            $tasks = Task::where('user_id', $user_id)->where('private', 1)->get();
+        }
 
         return view('user', [
             'tasks' => $tasks,
