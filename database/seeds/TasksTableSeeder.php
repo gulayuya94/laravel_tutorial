@@ -21,6 +21,6 @@ class TasksTableSeeder extends Seeder
         //     'due_date' => Carbon::now(),
         //     'created_at' => Carbon::now(),
         // ]);
-        factory(App\Task::class, 100)->create();
+        factory(App\Task::class, 300)->create();
     }
 }

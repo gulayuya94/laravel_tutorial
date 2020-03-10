@@ -19,6 +19,7 @@ class CreateTasksTable extends Migration
             $table->string('title', 50);
             $table->text('content');
             $table->tinyInteger('status');
+            $table->tinyInteger('private');
             $table->date('due_date');
             $table->timestamps();
 

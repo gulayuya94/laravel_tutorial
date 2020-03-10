@@ -7,10 +7,11 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Task::class, function (Faker $faker) {
     return [
-        'user_id' => 6,
-        'title' => $faker->word,
-        'content' => $faker->sentence,
+        'user_id' => $faker->numberBetween($min = 1, $max = 20),
+        'title' => 'title' . $faker->numberBetween($min = 1, $max = 1000),
+        'content' => 'content' . $faker->numberBetween($min = 1, $max = 1000),
         'status' => $faker->numberBetween($min = 1, $max = 3),
-        'due_date' => $faker->date($format='Y-m-d',$min='now'),
+        'private' => $faker->numberBetween($min = 0, $max = 1),
+        'due_date' => $faker->datetimeBetween($startDate = 'now', $endDate = '+1 years')->format('Y-m-d'),
     ];
 });
