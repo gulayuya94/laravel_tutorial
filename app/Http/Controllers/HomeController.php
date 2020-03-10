@@ -88,10 +88,16 @@ class HomeController extends Controller
     public function showUserList()
     {
         // ログインユーザの情報を取得
-        $user = Auth::user();
+        $login_user = Auth::user();
 
         // ログインユーザ以外の全ユーザの情報を取得
-        $users = User::whereNotIn('id', [$user->id])->get(['name', 'account_name']);
+        $users = User::whereNotIn('id', [$login_user->id])->get(['id', 'name', 'account_name']);
+
+        foreach ($users as $user) {
+            if (Follow::where('follower_id', $login_user->id)->where('followee_id', $user->id)->exists()) {
+                $user['is_follow'] = true;
+            }
+        }
 
         return view('userlist', [
             'users' => $users,
@@ -230,7 +236,13 @@ class HomeController extends Controller
         
         return view('todoList', [
             'searchResults' => $searchResults,
-            'tasks' => $tasks,
+            'tasks' => $tasks
         ]);
+    }
+
+    public function is_follow($value)
+    {
+        $user = Auth::user();
+        return Follow::where('follower_id', $user->id)->where('followee_id', $value)->exists();
     }
 }

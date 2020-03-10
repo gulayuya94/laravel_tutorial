@@ -14,9 +14,9 @@ class Follow extends Model
     ];
 
     // そのユーザのことをログインユーザがフォローしているか返す
-    public function getIsFollowAttribute($value)
+    public function getIsFollowAttribute()
     {
-        $user = Auth::user();
-        return Follow::where('follower_id', $user->id)->where('followee_id', $value)->exists();
+        $login_user = Auth::user();
+        return Follow::where('follower_id', $login_user->id)->where('followee_id', $this->id)->exists();
     }
 }
