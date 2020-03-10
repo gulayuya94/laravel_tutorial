@@ -13,9 +13,9 @@
                 @if (isset($task_data))
                     <div class="card-body" style="border-bottom: solid 1px #333">
                         <div class="row">
-                            <div class="col-2 text-center">status</div>
+                            <div class="col-3 text-center">status</div>
                             <div class="col-2">title</div>
-                            <div class="col-4">content</div>
+                            <div class="col-3">content</div>
                             <div class="col-4">due_date</div>
                         </div>
                     </div>
@@ -26,10 +26,17 @@
                                 <div class="col-1">
                                     <p class="btn btn-warning btn-sm" style="cursor: default">waiting</p>
                                 </div>
+                                <div class="col-1">
+                                    @if ( $task_data['private'] === 'public' )
+                                        <p class="btn btn-success btn-sm">public</p>
+                                    @else
+                                        <p class="btn btn-secondary btn-sm">private</p>
+                                    @endif
+                                </div>
                                 <div class="col-3">
                                     <p class="text-center">{{ $task_data['title'] }}</p>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <p>{{ $task_data['content'] }}</p>
                                 </div>
                                 <div class="col-2">

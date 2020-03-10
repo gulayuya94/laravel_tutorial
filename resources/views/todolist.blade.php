@@ -97,13 +97,20 @@
                                         @elseif ( $searchResult->todo_status === 'working' )
                                             <p class="btn btn-primary btn-sm">{{$searchResult->todo_status}}</p>
                                         @else
-                                            <p class="btn btn-secondary btn-sm">{{$searchResult->todo_status}}</p>
+                                            <p class="btn btn-dark btn-sm">{{$searchResult->todo_status}}</p>
+                                        @endif
+                                    </div>
+                                    <div class="col-1">
+                                        @if ( $searchResult->private_status === 'public' )
+                                            <p class="btn btn-success btn-sm">public</p>
+                                        @else
+                                            <p class="btn btn-secondary btn-sm">private</p>
                                         @endif
                                     </div>
                                     <div class="col-3">
                                         <p class="text-center">{{ $searchResult->title }}</p>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <p>{{ $searchResult->content }}</p>
                                     </div>
                                     <div class="col-2">
@@ -133,9 +140,9 @@
 
                 <div class="card-body" style="border-bottom: solid 1px #333;">
                     <div class="row">
-                        <div class="col-2 text-center">status</div>
+                        <div class="col-3 text-center">status</div>
                         <div class="col-2">title</div>
-                        <div class="col-4">content</div>
+                        <div class="col-3">content</div>
                         <div class="col-4">due_date</div>
                     </div>
                 </div>
@@ -150,13 +157,20 @@
                                     @elseif ( $task->todo_status === 'working' )
                                         <p class="btn btn-primary btn-sm" style="cursor: default">{{$task->todo_status}}</p>
                                     @else
-                                        <p class="btn btn-secondary btn-sm" style="cursor: default">{{$task->todo_status}}</p>
+                                        <p class="btn btn-dark btn-sm" style="cursor: default">{{$task->todo_status}}</p>
+                                    @endif
+                                </div>
+                                <div class="col-1">
+                                    @if ( $task->private_status === 'public' )
+                                        <p class="btn btn-success btn-sm">public</p>
+                                    @else
+                                        <p class="btn btn-secondary btn-sm">private</p>
                                     @endif
                                 </div>
                                 <div class="col-3">
                                     <p class="text-center">{{ $task->title }}</p>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <p>{{ $task->content }}</p>
                                 </div>
                                 <div class="col-2">
