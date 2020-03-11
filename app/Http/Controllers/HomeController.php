@@ -240,9 +240,23 @@ class HomeController extends Controller
         ]);
     }
 
-    public function is_follow($value)
+    public function follow($account_name)
     {
-        $user = Auth::user();
-        return Follow::where('follower_id', $user->id)->where('followee_id', $value)->exists();
+        return $account_name;
+    }
+
+    public function unfollow($account_name)
+    {
+        // ログインユーザの情報を取得
+        $login_user = Auth::user();
+
+        // $account_nameから対象ユーザのidを取得
+        $user_id = User::where('account_name', $account_name)->pluck('id');
+
+        // followsテーブルから削除
+        Follow::where('follower_id', $login_user->id)->where('followee_id', $user_id)->delete();
+
+        return redirect('/todos/userlist');
+
     }
 }

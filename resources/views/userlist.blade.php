@@ -31,9 +31,16 @@
                                 </div>
                                 <div class="col-1">
                                     @if ($user->is_follow)
-                                        <a href="hoge" class="btn btn-info btn-sm" role="button">-follow</a>
+                                        <form action="{{ route('unfollow', [$user->account_name]) }}" method="POST">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="btn btn-info btn-sm">-follow</button>
+                                        </form>
                                     @else
-                                        <a href="hoge" class="btn btn-outline-info btn-sm" role="button">+follow</a>
+                                        <form action="{{ route('follow', [$user->account_name]) }}" method="POST">
+                                        @csrf
+                                            <button class="btn btn-outline-info btn-sm">+follow</button>
+                                        </form>
                                     @endif
                                 </div>
                             </div>

@@ -42,7 +42,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::delete('/todos/{id}', 'HomeController@delete')->name('delete');
 
     // todo検索リクエスト
-    Route::get('/todos/search', 'HomeController@search');
+    Route::get('/todos/search', 'HomeController@search')->name('search');
+
+    // userフォローリクエスト
+    Route::post('/todos/follow/{account_name}', 'HomeController@follow')->name('follow');
+
+    // userアンフォローリクエスト
+    Route::delete('/todos/unfollow/{account_name}', 'HomeController@unfollow')->name('unfollow');
+
 });
 
 // ルートにアクセスでログイン前画面を表示する
