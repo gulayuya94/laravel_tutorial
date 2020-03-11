@@ -17,6 +17,7 @@ class CreateFollowsTable extends Migration
             $table->increments('id');
             $table->integer('follower_id')->unsigned();
             $table->integer('followee_id')->unsigned();
+            $table->tinyInteger('accept_status')->unsigned()->nullable();
             $table->timestamps();
 
             // 外部キーを設定

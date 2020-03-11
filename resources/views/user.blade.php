@@ -8,7 +8,22 @@
         </div>
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ $user_name[0] }}'s Todo List</div>
+                <div class="card-header">
+                    @if ($is_follow)
+                        <form action="{{ route('unfollow', [$account_name]) }}" method="POST" class="form-inline">
+                            @csrf
+                            @method('delete')
+                            <a>{{ $user_name[0] }}'s Todo List</a>
+                            <button class="btn btn-info btn-sm" style="margin-left: auto;">-follow</button>
+                        </form>
+                    @else
+                        <form action="{{ route('follow', [$account_name]) }}" method="POST" class="form-inline">
+                        @csrf
+                            <a>{{ $user_name[0] }}'s Todo List</a>
+                            <button class="btn btn-outline-info btn-sm" style="margin-left: auto;">+follow</button>
+                        </form>
+                    @endif
+                </div>
 
                 <div class="card-body" style="border-bottom: solid 1px #333;">
                     <div class="row">

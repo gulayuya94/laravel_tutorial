@@ -107,7 +107,7 @@ class HomeController extends Controller
     public function show($account_name)
     {
         // ログインユーザの情報を取得
-        $user = Auth::user();
+        $login_user = Auth::user();
 
         // account_nameからuserのidを取得
         $user_id = User::where('account_name', $account_name)->pluck('id');
@@ -117,15 +117,24 @@ class HomeController extends Controller
         // ログインユーザがそのユーザをフォローしていれば全てのtodoを表示
         // そうでなければpublicのtodoのみを表示
 
-        if (Follow::where('follower_id', $user->id)->where('followee_id', $user_id)->exists()) {
+        if (Follow::where('follower_id', $login_user->id)->where('followee_id', $user_id)->exists()) {
             $tasks = Task::where('user_id', $user_id)->get();
         } else {
             $tasks = Task::where('user_id', $user_id)->where('private', 1)->get();
         }
 
+        // そのユーザをフォローしているかどうか判定
+        if (Follow::where('follower_id', $login_user->id)->where('followee_id', $user_id)->exists()) {
+            $is_follow = true;
+        } else {
+            $is_follow = false;
+        }
+
         return view('user', [
             'tasks' => $tasks,
             'user_name' => $user_name,
+            'is_follow' => $is_follow,
+            'account_name' => $account_name,
         ]);
 
     }
@@ -240,9 +249,14 @@ class HomeController extends Controller
         ]);
     }
 
-    public function follow($account_name)
+    public function followRequest($account_name)
     {
-        return $account_name;
+        // followsテーブルにaccept_statusを1(未承認の状態)で追加するだけ
+
+        // その後リクエストを送ったユーザ側ではトップページにリクエスト通知が送られ、承認or却下を選択できる
+
+        // 承認された場合はaccept_statusを2に変更し、フォロー状態となる
+        // 却下の場合は対象の行を削除する
     }
 
     public function unfollow($account_name)
@@ -256,7 +270,7 @@ class HomeController extends Controller
         // followsテーブルから削除
         Follow::where('follower_id', $login_user->id)->where('followee_id', $user_id)->delete();
 
-        return redirect('/todos/userlist');
-
+        // return redirect('/todos/userlist');
+        return back();
     }
 }

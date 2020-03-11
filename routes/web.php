@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/todos/search', 'HomeController@search')->name('search');
 
     // userフォローリクエスト
-    Route::post('/todos/follow/{account_name}', 'HomeController@follow')->name('follow');
+    Route::post('/todos/follow/{account_name}', 'HomeController@followRequest')->name('follow');
 
     // userアンフォローリクエスト
     Route::delete('/todos/unfollow/{account_name}', 'HomeController@unfollow')->name('unfollow');
